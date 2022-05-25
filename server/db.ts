@@ -1,9 +1,6 @@
 const spicedPg = require("spiced-pg");
 const { promisify } = require("util");
-const bcrypt = require("bcryptjs");
-const genSalt = promisify(bcrypt.genSalt);
-const hash = promisify(bcrypt.hash);
-const compare = promisify(bcrypt.compare);
+import { genSalt, compare, hash } from "bcryptjs";
 
 const db = spicedPg(
     process.env.DATABASE_URL ||
