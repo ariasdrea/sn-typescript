@@ -3,6 +3,7 @@ const { promisify } = require("util");
 const bcrypt = require("bcryptjs");
 const genSalt = promisify(bcrypt.genSalt);
 const hash = promisify(bcrypt.hash);
+const compare = promisify(bcrypt.compare);
 
 const db = spicedPg(
     process.env.DATABASE_URL ||
@@ -37,4 +38,22 @@ export const registerUser = async ({
     );
 
     return rows[0].id;
+};
+
+export const getUserInfoByEmail = async (
+    email: string
+): Promise<{ id; password }> => {
+    const { rows } = await db.query(
+        `SELECT id, password FROM users WHERE email = $1`,
+        [email]
+    );
+
+    return rows[0];
+};
+
+export const loginUser = async (
+    plainTxtPassword: string,
+    hashedPassword: string
+): Promise<boolean> => {
+    return await compare(plainTxtPassword, hashedPassword);
 };

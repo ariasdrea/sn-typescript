@@ -24,7 +24,7 @@ export default function Login() {
                 onChange={handleChange}
                 type="password"
                 placeholder="Password"
-                name="pass"
+                name="password"
             />
             <button onClick={handleSubmit}>Login</button>
         </div>

@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import compression from "compression";
 import cookieSession from "cookie-session";
 import path from "path";
-import { registerUser } from "./db";
+import { registerUser, getUserInfoByEmail, loginUser } from "./db";
 
 const app: Express = (exports.app = express());
 const cookieSessionMiddleware = cookieSession({
@@ -30,6 +30,22 @@ app.post("/register.json", async (req, res) => {
         res.json({ success: true });
     } catch (e) {
         console.error("e in /register.json", e);
+        res.json({ success: false });
+    }
+});
+
+app.post("/login.json", async (req, res) => {
+    try {
+        const { id: userId, password: hashedPassword } =
+            await getUserInfoByEmail(req.body.email);
+        const match = await loginUser(req.body.password, hashedPassword);
+
+        if (match) {
+            req.session.userId = userId;
+            res.json({ success: true });
+        }
+    } catch (e) {
+        console.log("e in /login.json", e);
         res.json({ success: false });
     }
 });
