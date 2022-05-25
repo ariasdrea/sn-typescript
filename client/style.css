@@ -1,3 +1,10 @@
 body {
     background-color: ghostwhite;
 }
+
+img.question {
+    height: 20%;
+    width: 30%;
+    border: 3px solid darkslategrey;
+    padding: 2%;
+}
