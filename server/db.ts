@@ -42,7 +42,7 @@ export const registerUser = async ({
 
 export const getUserInfoByEmail = async (
     email: string
-): Promise<{ id; password }> => {
+): Promise<{ id: number; password: string }> => {
     const { rows } = await db.query(
         `SELECT id, password FROM users WHERE email = $1`,
         [email]
