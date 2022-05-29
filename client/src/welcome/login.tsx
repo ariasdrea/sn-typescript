@@ -13,7 +13,6 @@ export default function Login() {
                 login or
                 <Link to="/"> register</Link>
             </p>
-
             <input
                 onChange={handleChange}
                 type="text"
@@ -27,6 +26,10 @@ export default function Login() {
                 name="password"
             />
             <button onClick={handleSubmit}>Login</button>
+
+            <Link to="/reset">
+                <p> Reset Password</p>
+            </Link>
         </div>
     );
 }

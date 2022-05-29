@@ -1,25 +1,21 @@
 const spicedPg = require("spiced-pg");
-const { promisify } = require("util");
-const bcrypt = require("bcryptjs");
-const genSalt = promisify(bcrypt.genSalt);
-const hash = promisify(bcrypt.hash);
-const compare = promisify(bcrypt.compare);
+import { genSalt, hash, compare } from "bcryptjs";
 
 const db = spicedPg(
     process.env.DATABASE_URL ||
         "postgres:postgres:postgres@localhost:5432/sn-typescript"
 );
 
-type userInfo = {
+interface userInfo {
     first: string;
     last: string;
     email: string;
     password: string;
-};
+}
 
-type userId = {
+interface userId {
     userId: number;
-};
+}
 
 export const registerUser = async ({
     first,
@@ -57,3 +53,40 @@ export const loginUser = async (
 ): Promise<boolean> => {
     return await compare(plainTxtPassword, hashedPassword);
 };
+
+export const storeCode = async (
+    code: string,
+    email: string
+): Promise<string> => {
+    const { rows } = await db.query(
+        `
+        INSERT INTO reset_codes (code, email)
+        VALUES ($1, $2)
+        RETURNING code`,
+        [code, email]
+    );
+
+    return rows[0].code;
+};
+
+export const retrieveCode = async (email: string) => {
+    const { rows } = await db.query(
+        ` 
+        SELECT code FROM reset_codes
+        WHERE email = $1 
+        AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'`,
+        [email]
+    );
+
+    return rows;
+};
+
+export const updatePassword = (email, newPassword) =>
+    db.query(
+        `
+        UPDATE users
+        SET password = $2
+        WHERE email = $1
+    `,
+        [email, newPassword]
+    );
