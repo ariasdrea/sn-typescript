@@ -47,12 +47,10 @@ export const getUserInfoByEmail = async (
     return rows[0];
 };
 
-export const loginUser = async (
+export const loginUser = (
     plainTxtPassword: string,
     hashedPassword: string
-): Promise<boolean> => {
-    return await compare(plainTxtPassword, hashedPassword);
-};
+): Promise<boolean> => compare(plainTxtPassword, hashedPassword);
 
 export const storeCode = async (
     code: string,
