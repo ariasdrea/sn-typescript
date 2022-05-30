@@ -67,7 +67,9 @@ export const storeCode = async (
     return rows[0].code;
 };
 
-export const retrieveCode = async (email: string) => {
+export const retrieveCode = async (
+    email: string
+): Promise<{ code: string }[]> => {
     const { rows } = await db.query(
         ` 
         SELECT code FROM reset_codes
@@ -79,7 +81,10 @@ export const retrieveCode = async (email: string) => {
     return rows;
 };
 
-export const updatePassword = (email, newPassword) =>
+export const updatePassword = (
+    email: string,
+    newPassword: string
+): Promise<void> =>
     db.query(
         `
         UPDATE users

@@ -95,10 +95,13 @@ export default function Reset() {
 
     return (
         <div>
-            <Link to="/login"></Link>
             <h2>Reset Password</h2>
-            {renderDisplay()}
+            <p>
+                Head back to <Link to="/login">Login</Link>
+            </p>
             {error && <p>oops, something went wrong</p>}
+
+            {renderDisplay()}
         </div>
     );
 }
