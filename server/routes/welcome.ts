@@ -1,5 +1,5 @@
-import express from "express";
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 import cryptoRandomString from "crypto-random-string";
 import { genSalt, hash } from "bcryptjs";
 import {
